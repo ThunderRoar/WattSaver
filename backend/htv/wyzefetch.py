@@ -4,9 +4,11 @@ from dotenv import load_dotenv
 from wyze_sdk.errors import WyzeApiError
 from datetime import datetime, timedelta
 from pymongo_get_database import get_database
-from apscheduler.schedulers.blocking import BlockingScheduler
+from flask import Flask, request, Response
 dbname = get_database()
 collection_name = dbname["Outlet"]
+
+app = Flask(__name__)
 
 load_dotenv()
 
@@ -27,6 +29,8 @@ print(f"refresh token: {response['refresh_token']}")
 os.environ['WYZE_ACCESS_TOKEN'] = response['access_token']
 
 client = Client(token=os.environ['WYZE_ACCESS_TOKEN'])
+
+app = Flask(__name__)
 
 def queryPowerData(device_mac):
     try:
@@ -78,17 +82,26 @@ def updateData():
                 print(f"is_online: {device.is_online}")
                 print(f"product model: {device.product.model}")
                 queryPowerData(device.mac)
+                return True
     except WyzeApiError as e:
         # You will get a WyzeApiError if the request failed
         print(f"Got an error: {e}")
+        return False
 
-def main():
-    scheduler = BlockingScheduler()
-    scheduler.add_job(updateData, 'interval', hours=1)
-    scheduler.start()
+@app.route('/update', methods = ['POST'])
+def update_text():
+    if updateData():
+        return Response("Database updated successfully", status=200, mimetype='application/json')
+    else:
+        return Response("We hit an error", status=418, mimetype='application/json')
 
-if __name__ == "__main__":
-    main()
+@app.route('/', methods=['POST', 'GET'])
+def index():
+    return 'Use POST requests'
+
+if __name__ == '__main__':
+    #app.debug = True
+    app.run(host='0.0.0.0', port=8000)
 
 # Turn on/off plug
 # try:

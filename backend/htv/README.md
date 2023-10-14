@@ -19,6 +19,8 @@ pip install -r requirements.txt
 ```bash
 python wyzefetch.py
 ```
+## Updating Database
+Send POST request to `http://localhost:8000/update` to update database
 # Developer
 ## Python
 ### Creating Python Virtual Environment
@@ -54,3 +56,4 @@ db.createCollection(
 - https://wyze-sdk.readthedocs.io/en/latest/index.html
 - https://stackoverflow.com/questions/54484890/ssl-handshake-issue-with-pymongo-on-python3
 - https://stackoverflow.com/questions/22715086/scheduling-python-script-to-run-every-hour-accurately
+- https://stackoverflow.com/questions/68579397/is-there-an-easy-way-to-receive-http-post-request-in-python-like-in-php
