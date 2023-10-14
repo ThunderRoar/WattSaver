@@ -53,3 +53,4 @@ db.createCollection(
 - https://github.com/shauntarves/wyze-sdk
 - https://wyze-sdk.readthedocs.io/en/latest/index.html
 - https://stackoverflow.com/questions/54484890/ssl-handshake-issue-with-pymongo-on-python3
+- https://stackoverflow.com/questions/22715086/scheduling-python-script-to-run-every-hour-accurately

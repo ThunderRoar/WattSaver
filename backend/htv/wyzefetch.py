@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from wyze_sdk.errors import WyzeApiError
 from datetime import datetime, timedelta
 from pymongo_get_database import get_database
+from apscheduler.schedulers.blocking import BlockingScheduler
 dbname = get_database()
 collection_name = dbname["Outlet"]
 
@@ -66,7 +67,7 @@ def queryPowerData(device_mac):
         # You will get a WyzeApiError if the request failed
         print(f"Got an error: {e}")
 
-def main():
+def updateData():
     # List devices
     try:
         response = client.devices_list()
@@ -80,6 +81,11 @@ def main():
     except WyzeApiError as e:
         # You will get a WyzeApiError if the request failed
         print(f"Got an error: {e}")
+
+def main():
+    scheduler = BlockingScheduler()
+    scheduler.add_job(updateData, 'interval', hours=1)
+    scheduler.start()
 
 if __name__ == "__main__":
     main()
