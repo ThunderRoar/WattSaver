@@ -1,8 +1,13 @@
+import Screen2 from "./Screen2";
+
+import React from 'react';
 import { useState } from "react";
-import { SafeAreaView, ScrollView, View, Text } from "react-native";
+import { SafeAreaView, ScrollView, View, Text, Button } from "react-native";
 import { Stack, useRouter } from "expo-router";
 // import { BarChart } from 'react-native-chart-kit';
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
+import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 
 import { COLORS, icons, images, SIZES } from "../constants";
 import {
@@ -13,8 +18,16 @@ import {
 } from "../components";
 
 const Home = () => {
+  const navigation = useNavigation();
+
+  const goToScreen2 = () => {
+    navigation.navigate('Screen2');
+  };
+
   const router = useRouter()
-  const [searchTerm, setSearchTerm] = useState("");
+  const [showScreen2, setShowScreen2] = useState(false);
+
+
     // Define your chart data as an array
     const chartData = [
       { name: "Item 1", value: 30 },
@@ -32,16 +45,17 @@ const Home = () => {
     ];
 
   return (
+    
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <Stack.Screen
         options={{
           headerStyle: { backgroundColor: COLORS.lightWhite },
           headerShadowVisible: false,
           headerLeft: () => (
-            <ScreenHeaderBtn iconUrl={icons.menu} dimension='60%' />
+            <ScreenHeaderBtn iconUrl={icons.menu} dimension="60%" />
           ),
           headerRight: () => (
-            <ScreenHeaderBtn iconUrl={images.profile} dimension='100%' />
+            <ScreenHeaderBtn iconUrl={images.profile} dimension="100%" />
           ),
           headerTitle: "WattSaver",
         }}
@@ -109,6 +123,7 @@ const Home = () => {
         </View>
       </ScrollView>
 
+      <Button title="Go to Screen2" onPress={goToScreen2} />
 
     </SafeAreaView>
   );
