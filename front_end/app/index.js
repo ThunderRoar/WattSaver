@@ -1,4 +1,4 @@
-import Screen2 from "./Screen2";
+//import Screen2 from "./Screen2";
 
 import React from 'react';
 import { useState } from "react";
@@ -20,9 +20,9 @@ import {
 const Home = () => {
   const navigation = useNavigation();
 
-  const goToScreen2 = () => {
-    navigation.navigate('Screen2');
-  };
+  // const goToScreen2 = () => {
+  //   navigation.navigate('Screen2');
+  // };
 
   const router = useRouter()
   const [showScreen2, setShowScreen2] = useState(false);
@@ -70,9 +70,7 @@ const Home = () => {
           }}
         >
             
-          <Welcome
-
-          />
+          <Welcome/>
 
           <LineChart data={chartData} 
             areaChart
@@ -123,7 +121,7 @@ const Home = () => {
         </View>
       </ScrollView>
 
-      <Button title="Go to Screen2" onPress={goToScreen2} />
+      {/* <Button title="Go to Screen2" onPress={goToScreen2} /> */}
 
     </SafeAreaView>
   );

@@ -1,4 +1,10 @@
 import React, { useState } from 'react'
+import { useNavigation } from '@react-navigation/native'; // Import useNavigation
+import Rates from "../../../app/Rates";
+import PowerSources from "../../../app/PowerSources";
+import Planning from "../../../app/Planning";
+
+
 import { 
   View, 
   Text,
@@ -7,7 +13,7 @@ import {
   Image,
   FlatList
  } from 'react-native'
-import { useRouter } from 'expo-router';
+//import { useRouter } from 'expo-router';
 
 import styles from './welcome.style'
 import {icons, SIZES} from '../../../constants'
@@ -19,8 +25,10 @@ const jobTypes = ["Rates", "Power Sources", "Planning"];
 
 
 const Welcome = () => {
-  const router = useRouter();
-  const [activeJobType, setActiveJobType] = useState('Full-time')
+  const navigation = useNavigation(); // Use the useNavigation hook
+
+  //const router = useRouter();
+  const [activeJobType, setActiveJobType] = useState('Rates');
   const Spacer = ({ size }) => (
     <View style={{ height: size, width: size }} />
   );
@@ -43,7 +51,16 @@ const Welcome = () => {
               style={styles.tab(activeJobType, item)}
               onPress={()=>{
                 setActiveJobType(item);
-                router.push(`/search/${item}`)
+                if (item === "Rates") {
+                  navigation.navigate('Rates'); // Navigate to the "Rates" screen
+                } else if (item === "Power Sources"){
+                  navigation.navigate('PowerSources'); // Navigate to the "Rates" screen
+                } else if (item === "Planning"){
+                    navigation.navigate('Planning'); // Navigate to the "Rates" screen
+                } else {
+                  // Handle other job types as needed
+                }
+                //router.push(`/search/${item}`)
               }}
             >
               <Text style={styles.tabText(activeJobType, item)}> {item} </Text>
@@ -59,13 +76,11 @@ const Welcome = () => {
 {/* spacing */}
       <View>
         <Spacer size={50} />
-        </View>
+      </View>
+
 
       <View style={styles.container}>
         <Image        
-  
-
-        
           style={styles.icon}
         />
         <Text style={styles.title}>Energy Consumption</Text>
