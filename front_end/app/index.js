@@ -48,7 +48,7 @@ const Home = () => {
           <Welcome
 
           />
-
+          
     <BarChart
     data={{
       labels: chartData.map((item) => item.name),
@@ -72,7 +72,6 @@ const Home = () => {
       },
     }}
   />
-  
           <Popularjobs />
           <Nearbyjobs />
 
