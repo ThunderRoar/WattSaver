@@ -3,6 +3,9 @@ from wyze_sdk import Client
 from dotenv import load_dotenv
 from wyze_sdk.errors import WyzeApiError
 from datetime import datetime, timedelta
+from pymongo_get_database import get_database
+dbname = get_database()
+collection_name = dbname["Outlet"]
 
 load_dotenv()
 
@@ -28,9 +31,12 @@ def queryPowerData(device_mac):
     try:
         plug = client.plugs.info(device_mac=device_mac)
         print(client.plugs.info(device_mac=plug.mac))
+        # doesn't work
         start_time = datetime.today() - timedelta(days=1)
+        end_time = datetime.today()
         print(f"Start time: {start_time}")
-        usage = client.plugs.get_usage_records(device_mac=plug.mac, device_model=plug.product.model, start_time=start_time)
+        print(f"End time: {end_time}")
+        usage = client.plugs.get_usage_records(device_mac=plug.mac, device_model=plug.product.model, start_time=start_time, end_time=end_time)
         # print(f"usage: {usage}")
         print(type(usage))
         usage_array = []
@@ -46,10 +52,16 @@ def queryPowerData(device_mac):
                         "type": "usage"
                     },
                     "timestamp": hour,
-                    "KWh": hourly_data[hour]
+                    "W": hourly_data[hour]
                 }
                 usage_array.append(example_json)
-        print(usage_array)
+                collection_name.update_one({
+                    "timestamp": hour
+                }, {"$set": {"W": hourly_data[hour]}})
+        # print(usage_array)
+        collection_name.insert_many(usage_array)
+        # collection_name.update_many(usage_array)
+        print("Completed update")
     except WyzeApiError as e:
         # You will get a WyzeApiError if the request failed
         print(f"Got an error: {e}")
