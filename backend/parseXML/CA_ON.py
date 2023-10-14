@@ -1,3 +1,5 @@
+# https://github.com/electricitymaps/electricitymaps-contrib/tree/master/parsers
+
 #!/usr/bin/env python3
 import xml.etree.ElementTree as ET
 from datetime import datetime, timedelta, timezone
