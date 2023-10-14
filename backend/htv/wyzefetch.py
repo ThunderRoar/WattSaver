@@ -49,22 +49,25 @@ def queryPowerData(device_mac):
             # print(type(record))
             hourly_data = vars(record)['hourly_data']
             for hour in hourly_data:
-                # print(hour)
-                # print(hourly_data[hour])
-                example_json = {
-                    "metadata": {
-                        "sensorId": device_mac,
-                        "type": "usage"
-                    },
-                    "timestamp": hour,
-                    "W": hourly_data[hour]
-                }
-                usage_array.append(example_json)
-                collection_name.update_one({
-                    "timestamp": hour
-                }, {"$set": {"W": hourly_data[hour]}})
+                # print(collection_name.find_one({"timestamp": hour}))
+                if hourly_data[hour] != 0 and collection_name.find_one({"timestamp": hour}) is None:
+                    # print(hour)
+                    # print(hourly_data[hour])
+                    example_json = {
+                        "metadata": {
+                            "sensorId": device_mac,
+                            "type": "usage"
+                        },
+                        "timestamp": hour,
+                        "W": hourly_data[hour]
+                    }
+                    usage_array.append(example_json)
+                    # collection_name.update_one({
+                    #     "timestamp": hour
+                    # }, {"$set": {"W": hourly_data[hour]}})
         # print(usage_array)
-        collection_name.insert_many(usage_array)
+        if len(usage_array) >= 1:
+            collection_name.insert_many(usage_array)
         # collection_name.update_many(usage_array)
         print("Completed update")
     except WyzeApiError as e:

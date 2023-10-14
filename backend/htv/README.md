@@ -2,7 +2,7 @@
 ## Activate Virtual Environment
 Run command in `backend` folder
 ```bash
-python3.8 -m venv htv
+python3 -m venv htv
 
 source htv/bin/activate
 ```
@@ -42,7 +42,7 @@ use HackTheValley
 ### Create Time Series Collection
 ```bash
 db.createCollection(
-"Outlet",
+"CA_ON",
 {
   timeseries: {
     timeField: "timestamp",
@@ -50,7 +50,12 @@ db.createCollection(
     granularity: "hours"
 }})
 ```
-
+### Query Time Series
+```bash
+db.Outlet.findOne({
+   "timestamp": ISODate("2023-10-13T06:00:00.000Z")
+})
+```
 ## References
 - https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/
 - https://www.mongodb.com/docs/manual/core/timeseries/timeseries-procedures/
