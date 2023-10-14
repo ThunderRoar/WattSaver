@@ -1,7 +1,10 @@
 # User
 ## Activate Virtual Environment
+Run command in `backend` folder
 ```bash
-virtualenv .
+python3.8 -m venv htv
+
+source htv/bin/activate
 ```
 ## Create .env File
 Requires Wyze credentials and [Key ID & API Key](https://developer-api-console.wyze.com/#/apikey/view)
@@ -57,3 +60,4 @@ db.createCollection(
 - https://stackoverflow.com/questions/54484890/ssl-handshake-issue-with-pymongo-on-python3
 - https://stackoverflow.com/questions/22715086/scheduling-python-script-to-run-every-hour-accurately
 - https://stackoverflow.com/questions/68579397/is-there-an-easy-way-to-receive-http-post-request-in-python-like-in-php
+- https://www.freecodecamp.org/news/how-to-dockerize-a-flask-app/
