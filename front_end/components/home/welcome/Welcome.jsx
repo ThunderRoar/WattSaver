@@ -28,34 +28,12 @@ const Welcome = () => {
   return (
     <View>
 
-
-
       <View style={styles.container}>
         <Text style={styles.userName}> Hello Vincent </Text>
         <Text style={styles.welcomeMessage}> Energy Usage</Text>
       </View>
-
-{/* 
-    <View style={styles.searchContainer}>
-        <View style={styles.searchWrapper}>
-          <TextInput
-            style={styles.searchInput}
-            value=""
-            onChange={()=>{}}
-            placeholder="What are you looking for?"
-          />
-        </View>
-
-        <TouchableOpacity style={styles.searchBtn} onPress={() => {}}>
-          <Image
-            source={icons.search}
-            resizeMode="contain"
-            style={styles.searchBtnImage}
-            />
-        </TouchableOpacity>
-
-      </View> */}
-      <Text>Check the Current:</Text>
+      <Text></Text>
+      <Text>  Check the Current:</Text>
 
       <View style={styles.tabsContainer}>
         <FlatList

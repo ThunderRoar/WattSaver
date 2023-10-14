@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { SafeAreaView, ScrollView, View } from "react-native";
+import { SafeAreaView, ScrollView, View, Text } from "react-native";
 import { Stack, useRouter } from "expo-router";
-import { BarChart } from 'react-native-chart-kit';
+// import { BarChart } from 'react-native-chart-kit';
+import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 
 import { COLORS, icons, images, SIZES } from "../constants";
 import {
@@ -16,9 +17,18 @@ const Home = () => {
   const [searchTerm, setSearchTerm] = useState("");
     // Define your chart data as an array
     const chartData = [
-        { name: "Item 1", value: 30 },
-        { name: "Item 2", value: 50 },
-        { name: "Item 3", value: 20 },
+      { name: "Item 1", value: 30 },
+      { name: "Item 2", value: 50 },
+      { name: "Item 3", value: 20 },
+      { name: "Item 4", value: 45 },
+      { name: "Item 5", value: 70 },
+      { name: "Item 6", value: 35 },
+      {
+        value: 100,
+        date: '10 Apr 2022',
+        label: '10 Apr',
+        labelTextStyle: {color: 'lightgray', width: 60},
+      },
     ];
 
   return (
@@ -42,36 +52,55 @@ const Home = () => {
           style={{
             flex: 1,
             padding: SIZES.medium,
+            // backgroundColor: '#1C1C1C',
           }}
         >
             
           <Welcome
 
           />
-          
-    <BarChart
-    data={{
-      labels: chartData.map((item) => item.name),
-      datasets: [
-        {
-          data: chartData.map((item) => item.value),
-        },
-      ],
-    }}
-    width={SIZES.width} // You can adjust the width as needed
-    height={200} // You can adjust the height as needed
-    style={{margin:10, padding:10}}
-    yAxisLabel="Value"
-    fromZero
-    chartConfig={{
-      backgroundGradientFrom: COLORS.primary,
-      backgroundGradientTo: COLORS.primary,
-      color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-      style: {
-        borderRadius: 16,
-      },
-    }}
-  />
+
+          <LineChart data={chartData} 
+            areaChart
+            hideDataPoints
+            isAnimated
+            animationDuration={1200}
+            startFillColor="#0BA5A4"
+            startOpacity={1}
+            endOpacity={0.3}
+            initialSpacing={0}
+            endSpacing={90}
+            noOfSections={5}
+            width={270}
+            data={chartData}
+            spacing={30}
+            thickness={3}
+            maxValue={400}
+            yAxisColor="#0BA5A4"
+            showVerticalLines
+            verticalLinesColor="rgba(14,164,164,0.5)"
+            xAxisColor="#0BA5A4"
+            color="#0BA5A4"
+            pointerConfig={{ pointerLabelComponent: items => {
+              return (
+                <View
+                  style={{
+                    height: 90,
+                    width: 100,
+                    justifyContent: 'center',
+                  }}>
+                    <Text style={{color: 'white', fontSize: 14, marginBottom:6,textAlign:'center'}}>
+                      {items[0].date}
+                    </Text>
+
+                    <View style={{paddingHorizontal:14,paddingVertical:6, borderRadius:16, backgroundColor:'white'}}>
+                    <Text style={{fontWeight: 'bold',textAlign:'center'}}>
+                      {'$' + items[0].value + '.0'}
+                    </Text>
+                    </View>
+                  </View>
+              )
+            }}}/>
           <Popularjobs />
           <Nearbyjobs />
 
