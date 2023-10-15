@@ -1,16 +1,11 @@
-//import Screen2 from "./Screen2";
-
 import React from 'react';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SafeAreaView, ScrollView, View, Text, Button, Image } from "react-native";
 import { Stack, useRouter } from "expo-router";
+
 // import { BarChart } from 'react-native-chart-kit';
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
-import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
-import { LinearGradient } from 'react-native-linear-gradient';
-
-
 import { COLORS, icons, images, SIZES } from "../constants";
 import {
   Nearbyjobs,
@@ -20,38 +15,81 @@ import {
 } from "../components";
 
 
+
 const Home = () => {
-  const navigation = useNavigation();
-
-  // const goToScreen2 = () => {
-  //   navigation.navigate('Screen2');
-  // };
-
   const router = useRouter()
-  const [showScreen2, setShowScreen2] = useState(false);
+  const [chartData, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
+  const endpoint = 'https://htv-node.onrender.com/api/query';
+  
+  const dayThomg = new Date();
+  const dayString = `${dayThomg.getFullYear()}\-${dayThomg.getMonth() + 1}\-${dayThomg.getDate() - 1}T${dayThomg.getHours()}0:00:00.000Z`
+  
+  // const dateStamp = {
+  //   // "timestamp": "2023-10-14T10:00:00.000Z"
+  //   "timestamp": dayString
+  // }
 
-    // Define your chart data as an array
-    const chartData = [
-      { name: "Item 1", value: 30 },
-      { name: "Item 2", value: 50 },
-      { name: "Item 3", value: 20 },
-      { name: "Item 4", value: 45 },
-      { name: "Item 5", value: 70 },
-      { name: "Item 6", value: 35 },
-      {
-        value: 100,
-        date: '10 Apr 2022',
-        label: '10 Apr',
-        labelTextStyle: {color: 'lightgray', width: 60},
+const getMovies = async () => {
+    try {
+      const response = await fetch(endpoint, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
       },
-    ];
+      body: JSON.stringify({
+        timestamp: '2023-10-14T10:00:00.000Z'
+      }),
+    });
+      const d = await response.json();
+      setData(d);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getMovies();
+  }, []);
+
+  console.log(chartData)
+  const stringChart = JSON.stringify(chartData)
+//  console.log(stringChart)
+  // console.log(JSON.stringify(chartData))
+
+ const badJSon = [{
+    "solar": chartData.solar,
+    "gas": chartData.gas,
+    "wind": chartData.wind,
+    "hydro": chartData.hydro,
+    "biomass": chartData.biomass,
+    'nuclear': chartData.nuclear
+ }];
+
+ console.log(badJSon)
+  // Define your chart data as an array
+  // const chartData = [
+  //   { name: "Item 1", value: 30 },
+  //   { name: "Item 2", value: 50 },
+  //   { name: "Item 3", value: 20 },
+  //   { name: "Item 4", value: 45 },
+  //   { name: "Item 5", value: 70 },
+  //   { name: "Item 6", value: 35 },
+  //   {
+  //     value: 100,
+  //     date: '10 Apr 2022',
+  //     label: '10 Apr',
+  //     labelTextStyle: {color: 'lightgray', width: 60},
+  //   },
+  // ];
 
   return (
     
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
-    
-            
       <Stack.Screen
         options={{
           headerStyle: { backgroundColor: COLORS.lightWhite },
@@ -77,7 +115,7 @@ const Home = () => {
          
           <Welcome/>
 
-          <LineChart data={chartData} 
+          <LineChart data={badJSon} 
             areaChart
             hideDataPoints
             isAnimated
@@ -89,7 +127,6 @@ const Home = () => {
             endSpacing={90}
             noOfSections={5}
             width={270}
-            data={chartData}
             spacing={30}
             thickness={3}
             maxValue={400}
