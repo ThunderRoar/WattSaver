@@ -8,5 +8,5 @@ RUN pip3 install -r requirements.txt
 
 COPY . .
 
-EXPOSE 6000
-CMD [ "python3", "wyzefetch.py"]
+EXPOSE 4000
+CMD [ "python3", "CA_ON.py"]
