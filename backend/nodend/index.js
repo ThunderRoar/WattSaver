@@ -1,5 +1,6 @@
 import express from 'express';
 import bodyParser from "body-parser";
+import fetch from 'node-fetch';
 
 const app = express();
 const port = 3000;
@@ -11,18 +12,23 @@ app.get('/', function(req, res, next) {
     res.send("Try calling our API endpoints");
 });
 
-app.post('/api/query', async function (req, res) {
+app.post('/api/update', async function (req, res) {
     const data = req.body;
     logData(req)
     console.log('Received data: ', data);
-    let response = "No action received.";
-    let result = "";
     try {
-        response = JSON.stringify({
-            "result": result
+        const event = new Date(req.body.timestamp);
+        const queryTime = event.toISOString();
+
+        const body = {timestamp: queryTime};
+        const response = await fetch('http://localhost:8000/update', {
+            method: 'post',
+            body: JSON.stringify(body),
+            headers: {'Content-Type': 'application/json'}
         });
-        console.log(response);
-        res.send(response);
+        console.log("Bar")
+        console.log(response.status);
+        res.send(response.status);
     }
     catch {
         res.status(418).send("There was an error with handling your request");

@@ -12,9 +12,13 @@ import arrow
 import pandas as pd
 from requests import Session
 
+from flask import Flask, request, Response
+
 from pymongo_get_database import get_database
 dbname = get_database()
 collection_name = dbname["CA_ON"]
+
+app = Flask(__name__)
 
 """
 Some notes about timestamps:
@@ -181,11 +185,9 @@ def fetch_production(
 
     return data
 
-
-if __name__ == "__main__":
-    """Main method, never used by the Electricity Map backend, but handy for testing."""
-
-    now = arrow.utcnow()
+def updateDB(timestamp):
+    # now = arrow.utcnow()
+    now = arrow.get(timestamp)
     print("we expect correct results when time in UTC and Ontario differs")
     print(
         "data should be for {}".format(
@@ -217,5 +219,25 @@ if __name__ == "__main__":
             collection_name.insert_many(production_array)
         # collection_name.update_many(usage_array)
         print("Completed update")
+        return True
     except:
         print("An exception occurred")
+        return False
+
+@app.route('/update', methods = ['POST'])
+def update_text():
+    content = request.json
+    timestamp = content['timestamp']
+    print(timestamp)
+    if updateDB(timestamp):
+        return Response("Database updated successfully", status=200, mimetype='application/json')
+    else:
+        return Response("We hit an error", status=418, mimetype='application/json')
+
+@app.route('/', methods=['POST', 'GET'])
+def index():
+    return 'Use POST requests'
+
+if __name__ == '__main__':
+    #app.debug = True
+    app.run(host='0.0.0.0', port=8000)

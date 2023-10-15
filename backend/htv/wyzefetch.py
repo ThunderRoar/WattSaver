@@ -30,8 +30,6 @@ os.environ['WYZE_ACCESS_TOKEN'] = response['access_token']
 
 client = Client(token=os.environ['WYZE_ACCESS_TOKEN'])
 
-app = Flask(__name__)
-
 def queryPowerData(device_mac):
     try:
         plug = client.plugs.info(device_mac=device_mac)
