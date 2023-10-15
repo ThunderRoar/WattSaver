@@ -86,6 +86,13 @@ const Welcome = () => {
         <Text style={styles.title}>Energy Consumption</Text>
         <Text style={styles.value}>125 kWh</Text>
         <Text style={styles.subtitle}>This Month</Text>
+        <Text></Text>
+        <Text style={styles.subtitle}>LEGEND</Text>
+        <Text style={styles.subtitle}>Orange: Nuclear</Text>
+        <Text style={styles.subtitle}>Blue: Hydro</Text>
+        <Text style={styles.subtitle}>Green: Wind</Text>
+        <Text style={styles.subtitle}>Yellow: Solar</Text>
+        <Text style={styles.subtitle}>Red: Natural Gas</Text>
       </View>
     </View>
   )

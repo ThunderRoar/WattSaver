@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect, useState } from "react";
-import { SafeAreaView, ScrollView, View, Text, Button, Image } from "react-native";
+import { SafeAreaView, ScrollView, View, Text, Button, Image, FlatList } from "react-native";
 import { Stack, useRouter } from "expo-router";
 
 // import { BarChart } from 'react-native-chart-kit';
@@ -41,6 +41,7 @@ const getMovies = async () => {
       },
       body: JSON.stringify({
         timestamp: '2023-10-14T10:00:00.000Z'
+       // timestamp: dayString
       }),
     });
       const d = await response.json();
@@ -56,39 +57,85 @@ const getMovies = async () => {
     getMovies();
   }, []);
 
-  console.log(chartData)
+  // console.log(chartData)
   const stringChart = JSON.stringify(chartData)
 //  console.log(stringChart)
   // console.log(JSON.stringify(chartData))
 
- const badJSon = [{
-    "solar": chartData.solar,
-    "gas": chartData.gas,
-    "wind": chartData.wind,
-    "hydro": chartData.hydro,
-    "biomass": chartData.biomass,
-    'nuclear': chartData.nuclear
- }];
+//  const badJSon = [{
+//     "solar": chartData.solar,
+//     "gas": chartData.gas,
+//     "wind": chartData.wind,
+//     "hydro": chartData.hydro,
+//     "biomass": chartData.biomass,
+//     'nuclear': chartData.nuclear
+//  }];
 
- console.log(badJSon)
+//  const badJSon = [{
+//   "solar": 174,
+//   "gas": 882,
+//   "wind": 2747 ,
+//   "hydro": 3893,
+//   "biomass": 0,
+//   'nuclear': 9147,
+// }];
+
+ //console.log(badJSon)
   // Define your chart data as an array
-  // const chartData = [
-  //   { name: "Item 1", value: 30 },
-  //   { name: "Item 2", value: 50 },
-  //   { name: "Item 3", value: 20 },
-  //   { name: "Item 4", value: 45 },
-  //   { name: "Item 5", value: 70 },
-  //   { name: "Item 6", value: 35 },
-  //   {
-  //     value: 100,
-  //     date: '10 Apr 2022',
-  //     label: '10 Apr',
-  //     labelTextStyle: {color: 'lightgray', width: 60},
-  //   },
-  // ];
+  const cd = [
+    { name: "Solar", value: 8.49 },
+    { name: "Gas", value: 9.00 },
+    { name: "Wind", value: 8.46 },
+    { name: "Hydro", value: 7.07 },
+    { name: "Biomass", value: 9.00 },
+    { name: "Nuclear", value: 4.89 },
+    {
+      value: 100,
+      date: '15 Oct 2022',
+      label: '15 Oct',
+      labelTextStyle: {color: 'lightgray', width: 60},
+    },
+  ];
+  const nuclear = [{value: 4.89},{value: 5.36},{value: 5.97},{value: 6.61},{value: 7.06}];
+  const hydro = [{value: 7.07},{value: 7.76},{value: 8.52},{value: 9.20},{value: 9.98}];
+  const wind = [{value: 8.46},{value: 9.32},{value: 10.31},{value: 11.32},{value: 12.18}];
+  const solar = [{value: 8.49},{value: 9.40},{value: 10.42},{value: 11.36},{value: 12.30}];
+  const gas = [{value: 9.00},{value: 10.00},{value: 11.00},{value: 12.00},{value: 13.00}];
+  const biomass = [{value: 9.00},{value: 10.00},{value: 11.00},{value: 12.00},{value: 13.00}];
+
+
+  const createAreaChartData = () => {
+    const areaChartData = [];
+
+    for (const key in badJSon[0]) {
+      areaChartData.push({
+        name: key,
+        data: badJSon.map(item => item[key]),
+      });
+    }
+
+    return areaChartData;
+  };
+
+  const pointerConfig = {
+    pointerLabelComponent: (items) => {
+      const data = items[0]; // Get the first data point
+      return (
+        <View style={{ width: 100, justifyContent: 'center' }}>
+          <Text style={{ color: 'white', fontSize: 14, marginBottom: 6, textAlign: 'center' }}>
+            {data.date}
+          </Text>
+          <View style={{ paddingHorizontal: 14, paddingVertical: 6, borderRadius: 16, backgroundColor: 'white' }}>
+            <Text style={{ fontWeight: 'bold', textAlign: 'center' }}>
+              {'$' + data.value + '.0'}
+            </Text>
+          </View>
+        </View>
+      );
+    },
+  };
 
   return (
-    
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
       <Stack.Screen
         options={{
@@ -109,58 +156,69 @@ const getMovies = async () => {
           style={{
             flex: 1,
             padding: SIZES.medium,
-            // backgroundColor: '#1C1C1C',
+            // leftpadding: 10,
           }}
         >
          
           <Welcome/>
+          
+          {/* {chartData.length > 0 && ( */}
+          <LineChart
+            // data={cd}
+            data={nuclear}
+            color1='orange'
+            dataPointsColor1='orange'
+            startFillColor1='orange'
 
-          <LineChart data={badJSon} 
+            data2={hydro}
+            color2='skyblue'
+            dataPointsColor2='blue'
+            startFillColor2='skyblue'
+
+            data3={wind}
+            color3='green'
+            dataPointsColor3='green'
+            startFillColor3='green'
+
+            data4={solar}
+            color4='yellow'
+            dataPointsColor4='yellow'
+            startFillColor4='yellow'
+
+            data5={gas}
+            color5='red'
+            dataPointsColor5='red'
+            startFillColor5='red'
+
+            // data6={biomass}
             areaChart
+            curved
             hideDataPoints
             isAnimated
             animationDuration={1200}
             startFillColor="#0BA5A4"
-            startOpacity={1}
+            startOpacity={0.1}
             endOpacity={0.3}
             initialSpacing={0}
-            endSpacing={90}
+            endSpacing={300}
             noOfSections={5}
-            width={270}
-            spacing={30}
-            thickness={3}
-            maxValue={400}
+            yAxisLabelSuffix={"W"}
+            width={275}
+            spacing={50}
+            thickness={2.5}
+            maxValue={15}
             yAxisColor="#0BA5A4"
             showVerticalLines
             verticalLinesColor="rgba(14,164,164,0.5)"
             xAxisColor="#0BA5A4"
             color="#0BA5A4"
-            pointerConfig={{ pointerLabelComponent: items => {
-              return (
-                <View
-                  style={{
-                    height: 90,
-                    width: 100,
-                    justifyContent: 'center',
-                  }}>
-                    <Text style={{color: 'white', fontSize: 14, marginBottom:6,textAlign:'center'}}>
-                      {items[0].date}
-                    </Text>
-
-                    <View style={{paddingHorizontal:14,paddingVertical:6, borderRadius:16, backgroundColor:'white'}}>
-                    <Text style={{fontWeight: 'bold',textAlign:'center'}}>
-                      {'$' + items[0].value + '.0'}
-                    </Text>
-                    </View>
-                  </View>
-              )
-            }}}/>
-          <Popularjobs />
-
-        </View>
+            pointerConfig={pointerConfig}/>
+          {/* )} */}
+        <Popularjobs/>
+      </View>
 
       <View style={{flex: 1, paddingVertical: 50 ,padding: 10,}}>
-      <Text style={{ fontSize: 20, textAlign: 'center' }}> Power Use Graph</Text>
+        <Text style={{ fontSize: 20, textAlign: 'center' }}> Power Use Graph</Text>
         <Image 
           style={{
             width: null,
@@ -172,9 +230,6 @@ const getMovies = async () => {
       </View>
 
       </ScrollView>
-
-      {/* <Button title="Go to Screen2" onPress={goToScreen2} /> */}
-
     </SafeAreaView>
   );
 };
