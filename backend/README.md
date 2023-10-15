@@ -63,9 +63,9 @@ npm start
 ```
 ## Docker
 Can also run using Docker, change ports as needed:
-- 3000 for `nodend`
-- 4000 for `parseXML`
-- 6000 for `htv`
+- 3000 for `htv-node`
+- 4000 for `htv-ieso`
+- 6000 for `htv-wyze`
 ```commandline
 docker run -p 3000:3000 --env-file ./.env -d jamesliangg/<CONTAINER_NAME>
 ```
