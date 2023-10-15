@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from "body-parser";
 import fetch from 'node-fetch';
+import {mongoQueryOne} from "./mongo.js";
 
 const app = express();
 const port = 3000;
@@ -21,14 +22,45 @@ app.post('/api/update', async function (req, res) {
         const queryTime = event.toISOString();
 
         const body = {timestamp: queryTime};
-        const response = await fetch('http://localhost:8000/update', {
+        const response = await fetch('http://localhost:4000/update', {
             method: 'post',
             body: JSON.stringify(body),
             headers: {'Content-Type': 'application/json'}
         });
-        console.log("Bar")
         console.log(response.status);
         res.send(response.status);
+    }
+    catch {
+        res.status(418).send("There was an error with handling your request");
+    }
+});
+
+app.post('/api/query', async function (req, res) {
+    const data = req.body;
+    logData(req)
+    console.log('Received data: ', data);
+    try {
+        const event = new Date(req.body.timestamp);
+        const ieso_result = await mongoQueryOne("timestamp", event, "CA_ON");
+        const usage_result = await mongoQueryOne("timestamp", event, "Outlet");
+        let usage_number = 0;
+        if (usage_result != null) {
+            usage_number = usage_result.W;
+        }
+        // console.log(ieso_result);
+
+        const response = JSON.stringify({
+            "timestamp": event,
+            "solar": ieso_result.solar,
+            "gas": ieso_result.gas,
+            "wind": ieso_result.wind,
+            "hydro": ieso_result.hydro,
+            "biomass": ieso_result.biomass,
+            "nuclear": ieso_result.nuclear,
+            "usage": usage_number
+        });
+        console.log(response);
+        res.send(response);
     }
     catch {
         res.status(418).send("There was an error with handling your request");

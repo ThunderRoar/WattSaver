@@ -55,6 +55,10 @@ db.createCollection(
 db.Outlet.findOne({
    "timestamp": ISODate("2023-10-13T06:00:00.000Z")
 })
+
+db.CA_ON.findOne({
+   "timestamp": ISODate("2023-10-13T06:00:00.000Z")
+})
 ```
 ## References
 - https://www.freecodecamp.org/news/how-to-setup-virtual-environments-in-python/

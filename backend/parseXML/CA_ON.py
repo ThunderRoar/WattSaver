@@ -191,21 +191,24 @@ def updateDB(timestamp):
     print("we expect correct results when time in UTC and Ontario differs")
     print(
         "data should be for {}".format(
-            now.replace(hour=2).to(tz_obj).format("YYYY-MM-DD")
+            # now.replace(hour=0).to(tz_obj).format("YYYY-MM-DD")
+            now.replace(hour=0).to(tz_obj).format("YYYY-MM-DD")
         )
     )
     print('fetch_production("CA-ON", target_datetime=now.replace(hour=2)) ->')
-    production = fetch_production("CA-ON", target_datetime=now.replace(hour=2))
+    production = fetch_production("CA-ON", target_datetime=now.replace(hour=0))
     try:
         production_array = []
         for sensorDate in production:
-            if collection_name.find_one({"timestamp": sensorDate['datetime']}) is None:
+            sensorTime = sensorDate['datetime'].replace(tzinfo=None)
+            # print(sensorTime)
+            if collection_name.find_one({"timestamp": sensorTime}) is None:
                 example_json = {
                     "metadata": {
                         "sensorId": sensorDate['zoneKey'],
                         "type": "production"
                     },
-                    "timestamp": sensorDate['datetime'],
+                    "timestamp": sensorTime,
                     "biomass": sensorDate['production']['biomass'],
                     "gas": sensorDate['production']['gas'],
                     "hydro": sensorDate['production']['hydro'],
@@ -240,4 +243,4 @@ def index():
 
 if __name__ == '__main__':
     #app.debug = True
-    app.run(host='0.0.0.0', port=8000)
+    app.run(host='0.0.0.0', port=4000)
