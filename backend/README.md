@@ -1,4 +1,6 @@
 # User
+## API Documentation
+Documentation is on [PostMan](https://documenter.getpostman.com/view/25806974/2s9YR58G11)
 ## Setting up Wyze Scrapper
 ### Activate Virtual Environment
 Run command in `backend` folder
