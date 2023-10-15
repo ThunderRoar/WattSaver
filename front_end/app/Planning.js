@@ -1,13 +1,15 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button , Image} from 'react-native';
+import { images } from "../constants";
+
 
 function Planning({ navigation }) {
   return (
-    <View>
-      <Text>Planning</Text>
+    <View style={{flex: 1, paddingVertical: 150 ,padding: 10,}}>
       
     </View>
   );
+  
 }
 
 export default Planning;

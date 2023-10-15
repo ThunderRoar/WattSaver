@@ -2,12 +2,14 @@
 
 import React from 'react';
 import { useState } from "react";
-import { SafeAreaView, ScrollView, View, Text, Button } from "react-native";
+import { SafeAreaView, ScrollView, View, Text, Button, Image } from "react-native";
 import { Stack, useRouter } from "expo-router";
 // import { BarChart } from 'react-native-chart-kit';
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
+import { LinearGradient } from 'react-native-linear-gradient';
+
 
 import { COLORS, icons, images, SIZES } from "../constants";
 import {
@@ -16,6 +18,7 @@ import {
   ScreenHeaderBtn,
   Welcome,
 } from "../components";
+
 
 const Home = () => {
   const navigation = useNavigation();
@@ -47,6 +50,8 @@ const Home = () => {
   return (
     
     <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.lightWhite }}>
+    
+            
       <Stack.Screen
         options={{
           headerStyle: { backgroundColor: COLORS.lightWhite },
@@ -69,7 +74,7 @@ const Home = () => {
             // backgroundColor: '#1C1C1C',
           }}
         >
-            
+         
           <Welcome/>
 
           <LineChart data={chartData} 
@@ -114,11 +119,21 @@ const Home = () => {
               )
             }}}/>
           <Popularjobs />
-          <Nearbyjobs />
-
-
 
         </View>
+
+      <View style={{flex: 1, paddingVertical: 50 ,padding: 10,}}>
+      <Text style={{ fontSize: 20, textAlign: 'center' }}> Power Use Graph</Text>
+        <Image 
+          style={{
+            width: null,
+            height: 220,
+            resizeMode:'contain',
+          }}
+          source={images.graph}/>
+        <Text style={{ fontSize: 10, textAlign: 'center' }}> Above is the average power usage activity</Text>
+      </View>
+
       </ScrollView>
 
       {/* <Button title="Go to Screen2" onPress={goToScreen2} /> */}
