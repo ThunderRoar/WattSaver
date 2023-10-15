@@ -6,11 +6,8 @@ on:
         - 'backend/htv'
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
-
     steps:
       -
         name: Set up QEMU
@@ -28,5 +25,10 @@ jobs:
         name: Build and push
         uses: docker/build-push-action@v5
         with:
+          context: ./backend/htv/
+          file: ./Dockerfile
+          platforms: linux/amd64
           push: true
-          tags: user/app:latest
+          tags: |
+            repo:${{ github.sha }}
+            repo:latest
