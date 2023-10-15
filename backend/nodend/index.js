@@ -13,7 +13,7 @@ app.get('/', function(req, res, next) {
     res.send("Try calling our API endpoints");
 });
 
-app.post('/api/update', async function (req, res) {
+app.post('/api/update_ieso', async function (req, res) {
     const data = req.body;
     logData(req)
     console.log('Received data: ', data);
@@ -23,6 +23,25 @@ app.post('/api/update', async function (req, res) {
 
         const body = {timestamp: queryTime};
         const response = await fetch('http://localhost:4000/update', {
+            method: 'post',
+            body: JSON.stringify(body),
+            headers: {'Content-Type': 'application/json'}
+        });
+        console.log(response.status);
+        res.send(response.status);
+    }
+    catch {
+        res.status(418).send("There was an error with handling your request");
+    }
+});
+
+app.post('/api/update_wyze', async function (req, res) {
+    const data = req.body;
+    logData(req)
+    console.log('Received data: ', data);
+    try {
+        const body = { };
+        const response = await fetch('http://localhost:6000/update', {
             method: 'post',
             body: JSON.stringify(body),
             headers: {'Content-Type': 'application/json'}

@@ -1,29 +1,64 @@
 # User
-## Activate Virtual Environment
+## Setting up Wyze Scrapper
+### Activate Virtual Environment
 Run command in `backend` folder
 ```bash
 python3 -m venv htv
 
 source htv/bin/activate
 ```
-## Create .env File
+### Create .env File
+Create in `htv` folder
 Requires Wyze credentials and [Key ID & API Key](https://developer-api-console.wyze.com/#/apikey/view)
 ```
 WYZE_EMAIL=<WYZE_EMAIL>
 WYZE_PASSWORD=<WYZE_PASSWORD>
 WYZE_KEY_ID=<WYZE_KEY_ID>
 WYZE_API_KEY=<WYZE_API_KEY>
+MONGO_CONNECTION=<MONGO_CONNECTION>
 ```
-## Setting Up Server
+### Setting Up Server
 ```bash
 pip install -r requirements.txt
 ```
-## Running Server
+### Running Server
 ```bash
 python wyzefetch.py
 ```
-## Updating Database
-Send POST request to `http://localhost:8000/update` to update database
+## Setting up IESO Scrapper
+### Activate Virtual Environment
+Run command in `backend` folder
+```bash
+python3 -m venv parseXML
+
+source parseXML/bin/activate
+```
+## Create .env File
+Create in `parseXML` folder
+```
+MONGO_CONNECTION=<MONGO_CONNECTION>
+```
+### Setting Up Server
+```bash
+pip install -r requirements.txt
+```
+### Running Server
+```bash
+python CA_ON.py
+```
+## Setting up Node Backend
+### Create .env File
+Create in `nodend` folder
+```
+MONGO_CONNECT_STRING=<MONGO_CONNECT_STRING>
+MONGO_DATABASE=<MONGO_DATABASE>
+```
+### Running Server
+```bash
+npm install
+
+npm start
+```
 # Developer
 ## Python
 ### Creating Python Virtual Environment
